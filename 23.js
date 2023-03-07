@@ -37,32 +37,36 @@ const fn = (n) => {
     const prev = [,1, 1, 1];
 
     const calc = (i) => {
-        console.log(i)
+        if (Math.round(i) !== i) {
+            return Infinity;
+        }
+
         if (cash[i] !== undefined) {
             return cash[i];
         }
 
-        if (i % 3 === 0) {
-            prev[i] = i / 3;
-            cash[i] = calc(i / 3) + 1;
-
-            return cash[i];
-        }
-
-        if (i % 2 === 0) {
-            prev[i] = i / 2;
-            cash[i] = calc(i / 2) + 1;
-
-            return cash[i];
-        }
-
-        prev[i] = i - 1;
-        cash[i] = calc(i - 1) + 1;
+        const variants = [calc(i - 1), calc(i / 2), calc(i / 3)];
+        const min = Math.min(...variants);
+        const minIndex = variants.findIndex((variant) => variant === min);
+        prev[i] = (() => {
+            switch (minIndex) {
+                case 0:
+                    return i - 1;
+                case 1:
+                    return i / 2;
+                case 2:
+                    return i / 3;
+            }
+        })();
+        cash[i] = min + 1;
 
         return cash[i];
     }
 
-    calc()
+    for (let numb = 4; numb <=n; numb++) {
+        calc(numb);
+    }
+
     const res = [n];
 
     while (res.at(-1) !== 1) {
