@@ -80,6 +80,7 @@ const fn = (content) => {
 
         return (value + 1) * value + 2 * value * (halfLength - value) - (isLengthEven ? 0 : value);
     });
+    console.log(countsByPosition)
     const countsStr = [...map.entries()].sort().map(([letter, positions]) => {
         const count = positions.reduce((res, position) => res + countsByPosition[position], 0);
 
